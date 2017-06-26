@@ -1,8 +1,8 @@
-# An intra-satellite network based on Bluetooth Low Energy
+# Intra-satellite communication based on Bluetooth Low Energy
 
 ## Overview
 
-This repository provides the code that has been developed for the master thesis *An intra-satellite network based on Bluetooth Low Energy* at Aalto university, Finland. The code is used with the nRF52832 chip from Nordic Semiconductor and handles the Bluetooth Low Energy connections between multiple devices to provide an easy-to-use system for the wireless communication between several satellite subsystems.
+This repository provides the code that has been developed for the master thesis *Intra-satellite communication based on Bluetooth Low Energy* at Aalto university, Finland. The code is used with the nRF52832 chip from Nordic Semiconductor and handles the Bluetooth Low Energy connections between multiple devices to provide an easy-to-use system for the wireless communication between several satellite subsystems.
 
 ## Usage
 
@@ -35,5 +35,3 @@ Refer to the thesis paper in this repository for in-depth information about the 
 The nRF SDK is provided by Nordic Semiconductor [here](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832/Development-tools-and-Software).
 
 This makefile uses the updated SoftDevice v4.0.3 (not 4.0.2 provided with the SDK), available [here](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832/Development-tools-and-Software).
-
-
