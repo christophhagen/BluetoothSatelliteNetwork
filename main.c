@@ -2,9 +2,6 @@
 
 #include "boards.h"
 
-// {0x7C,0xA7,0xDF,0x89,0x26,0xDB},
-// {0x48,0x69,0x59,0x92,0x5D,0xE6},
-
 void receivedData(ConstantData data) {
     /** Handle the received data */
 }
@@ -23,7 +20,7 @@ uint8_t peerID = MANAGER_CONNECTION_INVALID;
 
 void setupConnection() {
     Connection toPeer = {
-        .name         = "BOT",
+        .name         = "BOB",
         .asCentral    = false,
         .mainAddress  = {0x48,0x69,0x59,0x92,0x5D,0xE6},
         .interval     = 7.5,
@@ -48,11 +45,11 @@ void doSomethingPeriodic(void* context) {
 }
 
 int main(void) {
-    initialiseManager("MID");
-    bsp_board_leds_init();
+    initialiseManager("ALI");
+    bsp_board_leds_init(); // Only for debugging
     setupConnection();
-    //connect(peerID);
-    //startTimer(1000, doSomethingPeriodic);
-    bsp_board_led_on(0);
+    connect(peerID);
+    startTimer(1000, doSomethingPeriodic);
+    bsp_board_led_on(0); // Indicate that the device is running
     loopAndLog();
 }

@@ -7,8 +7,6 @@
 #include "advertising.h"
 #include "util.h"
 
-#include "boards.h" //TODO: Remove
-
 // Scan parameters requested for scanning and connection.
 static ble_gap_scan_params_t const scanParameters = {
     .active         = 0x00,
@@ -50,20 +48,17 @@ ret_code_t setAdvertisingData() {
 ret_code_t startAdvertising() {
     ret_code_t error = sd_ble_gap_adv_start(&advertisingParameters, CONN_CFG_TAG);
     RETURN_INFO_ON(error, "0x%04x", error);
-    bsp_board_led_on(1);
     return NRF_SUCCESS;
 }
 
 /**@brief Function for starting advertising. */
 void stopAdvertising() {
     (void) sd_ble_gap_adv_stop();
-    bsp_board_led_off(1);
 }
 
 /**@brief Function to start scanning. */
 ret_code_t startScan() {
     ret_code_t error = sd_ble_gap_scan_start(&scanParameters);
-    bsp_board_led_on(2);
     RETURN_INFO_ON(error, "0x%04x", error);
     return NRF_SUCCESS;
 }
@@ -71,7 +66,6 @@ ret_code_t startScan() {
 /**@brief Function to stop scanning. */
 ret_code_t stopScan() {
     ret_code_t error = sd_ble_gap_scan_stop();
-    bsp_board_led_off(2);
     RETURN_INFO_ON(error, "0x%04x", error);
     return NRF_SUCCESS;
 }
