@@ -1,0 +1,51 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+NRF_LOG_MODULE_NAME	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define NRF_LOG_MODULE_NAME /;"	macro	line:68	file:
+CENTRAL_LINK_COUNT	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define CENTRAL_LINK_COUNT /;"	macro	line:73	file:
+PERIPHERAL_LINK_COUNT	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define PERIPHERAL_LINK_COUNT /;"	macro	line:74	file:
+TOTAL_LINK_COUNT	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define TOTAL_LINK_COUNT /;"	macro	line:75	file:
+CONN_CFG_TAG	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define CONN_CFG_TAG /;"	macro	line:76	file:
+CENTRAL_SCANNING_LED	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define CENTRAL_SCANNING_LED /;"	macro	line:78	file:
+CENTRAL_CONNECTED_LED	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define CENTRAL_CONNECTED_LED /;"	macro	line:79	file:
+SCAN_INTERVAL	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define SCAN_INTERVAL /;"	macro	line:81	file:
+SCAN_WINDOW	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define SCAN_WINDOW /;"	macro	line:82	file:
+SCAN_TIMEOUT	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define SCAN_TIMEOUT /;"	macro	line:83	file:
+MIN_CONNECTION_INTERVAL	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define MIN_CONNECTION_INTERVAL /;"	macro	line:85	file:
+MAX_CONNECTION_INTERVAL	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define MAX_CONNECTION_INTERVAL /;"	macro	line:86	file:
+SLAVE_LATENCY	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define SLAVE_LATENCY /;"	macro	line:87	file:
+SUPERVISION_TIMEOUT	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define SUPERVISION_TIMEOUT /;"	macro	line:88	file:
+UUID16_SIZE	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define UUID16_SIZE /;"	macro	line:90	file:
+LEDBUTTON_LED	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define LEDBUTTON_LED /;"	macro	line:92	file:
+LEDBUTTON_BUTTON_PIN	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define LEDBUTTON_BUTTON_PIN /;"	macro	line:94	file:
+BUTTON_DETECTION_DELAY	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^#define BUTTON_DETECTION_DELAY /;"	macro	line:95	file:
+m_target_periph_name	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static char const m_target_periph_name[] = "Nordic_Blinky";                     \/**< Name of the device we try to connect to. This name is searched for in the scan report data*\/$/;"	variable	line:98	file:
+m_scan_params	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static ble_gap_scan_params_t const m_scan_params =$/;"	variable	line:101	file:
+m_connection_param	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static ble_gap_conn_params_t const m_connection_param =$/;"	variable	line:120	file:
+m_ble_lbs_c	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static ble_lbs_c_t        m_ble_lbs_c[TOTAL_LINK_COUNT];           \/**< Main structures used by the LED Button client module. *\/$/;"	variable	line:128	file:
+m_ble_lbs_c_count	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static uint8_t            m_ble_lbs_c_count;                       \/**< Keeps track of how many instances of LED Button client module have been initialized. >*\/$/;"	variable	line:129	file:
+m_ble_db_discovery	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static ble_db_discovery_t m_ble_db_discovery[TOTAL_LINK_COUNT];    \/**< list of DB structures used by the database discovery module. *\/$/;"	variable	line:130	file:
+m_gatt	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static nrf_ble_gatt_t     m_gatt;                                  \/**< GATT module instance. *\/$/;"	variable	line:131	file:
+assert_nrf_callback	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)$/;"	function	line:145	signature:(uint16_t line_num, const uint8_t * p_file_name)
+leds_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void leds_init(void)$/;"	function	line:155	file:	signature:(void)
+adv_report_parse	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static uint32_t adv_report_parse(uint8_t type, uint8_array_t * p_advdata, uint8_array_t * p_typedata)$/;"	function	line:173	file:	signature:(uint8_t type, uint8_array_t * p_advdata, uint8_array_t * p_typedata)
+scan_start	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void scan_start(void)$/;"	function	line:199	file:	signature:(void)
+lbs_c_evt_handler	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_evt)$/;"	function	line:220	file:	signature:(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_evt)
+on_adv_report	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void on_adv_report(ble_evt_t const * p_ble_evt) {$/;"	function	line:264	file:	signature:(ble_evt_t const * p_ble_evt)
+on_ble_evt	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void on_ble_evt(ble_evt_t const * p_ble_evt) {$/;"	function	line:327	file:	signature:(ble_evt_t const * p_ble_evt)
+ble_evt_dispatch	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void ble_evt_dispatch(ble_evt_t * p_ble_evt) {$/;"	function	line:447	file:	signature:(ble_evt_t * p_ble_evt)
+lbs_c_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void lbs_c_init(void) {$/;"	function	line:468	file:	signature:(void)
+ble_stack_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void ble_stack_init(void)$/;"	function	line:487	file:	signature:(void)
+led_status_send_to_all	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static ret_code_t led_status_send_to_all(uint8_t button_action)$/;"	function	line:539	file:	signature:(uint8_t button_action)
+button_event_handler	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void button_event_handler(uint8_t pin_no, uint8_t button_action) {$/;"	function	line:562	file:	signature:(uint8_t pin_no, uint8_t button_action)
+buttons_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void buttons_init(void) {$/;"	function	line:584	file:	signature:(void)
+db_disc_handler	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void db_disc_handler(ble_db_discovery_evt_t * p_evt) {$/;"	function	line:607	file:	signature:(ble_db_discovery_evt_t * p_evt)
+db_discovery_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void db_discovery_init(void) {$/;"	function	line:618	file:	signature:(void)
+power_manage	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void power_manage(void) {$/;"	function	line:626	file:	signature:(void)
+log_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void log_init(void) {$/;"	function	line:634	file:	signature:(void)
+timer_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void timer_init(void) {$/;"	function	line:642	file:	signature:(void)
+gatt_init	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^static void gatt_init(void) {$/;"	function	line:650	file:	signature:(void)
+main	/Users/user/Developer/nRF5_SDK/examples/ble_central/ble_app_multilink_central/main.c	/^int main(void) {$/;"	function	line:656	signature:(void)

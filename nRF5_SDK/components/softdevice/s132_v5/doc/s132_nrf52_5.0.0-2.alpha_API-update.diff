@@ -1,0 +1,375 @@
+
+|-----------------------------------------------------------------------------|
+|  2 Mbps PHY Support                                                         |
+|-----------------------------------------------------------------------------|
+
+//|
+//| Bitfield for PHYs used by PHY commands and events below
+//|
+
++/**@defgroup BLE_GAP_PHYS GAP PHYs
++ * @{ */
++#define BLE_GAP_PHY_AUTO                         0x00    /**< Automatic PHY selection. Refer @ref sd_ble_gap_phy_update for more information.*/
++#define BLE_GAP_PHY_1MBPS                        0x01    /**< 1 Mbps PHY. */
++#define BLE_GAP_PHY_2MBPS                        0x02    /**< 2 Mbps PHY. */
++#define BLE_GAP_PHY_CODED                        0x04    /**< Coded PHY. */
++
++/**@} */
+
+//|
+//| PHY Update event: Notifies the application that the PHY has been changed, or that a PHY update
+//| procedure is requested but the PHY is not changed.
+//|
+//| PHY Update Request event: Notifies the application that the peer has initiated a PHY Update Procedure.
+//| Application must respond to this event with a SD_BLE_GAP_PHY_UPDATE command providing its PHY preferences,
+//| otherwise the PHY Update procedure will time out.
+//|
+
+ enum BLE_GAP_EVTS
+ {
+   BLE_GAP_EVT_SEC_REQUEST,                      /**< Security Request.                               \n See @ref ble_gap_evt_sec_request_t.          */
+   BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST,        /**< Connection Parameter Update Request.            \n Reply with @ref sd_ble_gap_conn_param_update. \n See @ref ble_gap_evt_conn_param_update_request_t. */
+   BLE_GAP_EVT_SCAN_REQ_REPORT,                  /**< Scan request report.                            \n See @ref ble_gap_evt_scan_req_report_t. */
+-  BLE_GAP_EVT_DATA_LENGTH_UPDATE_REQUEST,       /**< Data Length Update request.                     \n Reply with @ref sd_ble_gap_data_length_update.\n See @ref ble_gap_evt_data_length_update_request_t. */
++  BLE_GAP_EVT_PHY_UPDATE_REQUEST,               /**< PHY Update Request.                             \n Reply with @ref sd_ble_gap_phy_update. \n See @ref ble_gap_evt_phy_update_request_t. */
++  BLE_GAP_EVT_PHY_UPDATE,                       /**< PHY Update Procedure is complete.               \n See @ref ble_gap_evt_phy_update_t.           */
++  BLE_GAP_EVT_DATA_LENGTH_UPDATE_REQUEST,       /**< Data Length Update Request.                     \n Reply with @ref sd_ble_gap_data_length_update.\n See @ref ble_gap_evt_data_length_update_request_t. */
+   BLE_GAP_EVT_DATA_LENGTH_UPDATE,               /**< LL Data Channel PDU payload length updated.     \n See @ref ble_gap_evt_data_length_update_t. */
+ };
+
++/**@brief Event structure for @ref BLE_GAP_EVT_PHY_UPDATE_REQUEST. */
++typedef struct
++{
++  ble_gap_phys_t peer_preferred_phys;            /**< The PHYs the peer prefers to use. */
++} ble_gap_evt_phy_update_request_t;
++
++/**@brief Event Structure for @ref BLE_GAP_EVT_PHY_UPDATE. */
++typedef struct
++{
++  uint8_t status;                               /**< Status of the procedure, see @ref BLE_HCI_STATUS_CODES.*/
++  uint8_t tx_phy;                               /**< TX PHY for this connection, see @ref BLE_GAP_PHYS. */
++  uint8_t rx_phy;                               /**< RX PHY for this connection, see @ref BLE_GAP_PHYS. */
++} ble_gap_evt_phy_update_t;
+
+ /**@brief Event structure for @ref BLE_GAP_EVT_SEC_PARAMS_REQUEST. */
+ typedef struct
+ {
+
+     ble_gap_evt_conn_param_update_request_t   conn_param_update_request;    /**< Connection Parameter Update Parameters. */
+-    ble_gap_evt_scan_req_report_t             scan_req_report;              /**< Scan Request Report parameters. */
++    ble_gap_evt_scan_req_report_t             scan_req_report;              /**< Scan Request Report Parameters. */
++    ble_gap_evt_phy_update_request_t          phy_update_request;           /**< PHY Update Request Event Parameters. */
++    ble_gap_evt_phy_update_t                  phy_update;                   /**< PHY Update Parameters. */
+     ble_gap_evt_data_length_update_request_t  data_length_update_request;   /**< Data Length Update Request Event Parameters. */
+     ble_gap_evt_data_length_update_t          data_length_update;           /**< Data Length Update Event Parameters. */
+   } params;
+ } ble_gap_evt_t;
+
+//|
+//| PHY Update command. Use for initiating or responding to a PHY Update Procedure.
+//| Either the master or the slave must call this function for the PHY to be changed.
+//|
+
+ enum BLE_GAP_SVCS
+ {
+   SD_BLE_GAP_CONNECT,                           /**< Connect. */
+   SD_BLE_GAP_CONNECT_CANCEL,                    /**< Cancel ongoing connection procedure. */
+   SD_BLE_GAP_RSSI_GET,                          /**< Get the last RSSI sample. */
++  SD_BLE_GAP_PHY_UPDATE,                        /**< Initiate or respond to a PHY Update Procedure. */
+   SD_BLE_GAP_DATA_LENGTH_UPDATE,                /**< Initiate or respond to a Data Length Update Procedure. */
+ };
+
++/**@brief PHY preferences for TX and RX
++ * @note  tx_phys and rx_phys are bit fields. Multiple bits can be set in them to indicate multiple preferred PHYs for each direction.
++ * @code
++ * p_gap_phys->tx_phys = BLE_GAP_PHY_1MBPS | BLE_GAP_PHY_2MBPS;
++ * p_gap_phys->rx_phys = BLE_GAP_PHY_1MBPS | BLE_GAP_PHY_2MBPS;
++ * @endcode
++ *
++ */
++typedef struct
++{
++  uint8_t tx_phys;     /**< Preferred transmit PHYs, see @ref BLE_GAP_PHYS. */
++  uint8_t rx_phys;     /**< Preferred receive PHYs, see @ref BLE_GAP_PHYS. */
++} ble_gap_phys_t;
++
+ 
++/**@brief Initiate or respond to a PHY Update Procedure
++ *
++ * @details   This function is used to initiate or respond to a PHY Update Procedure. It will always generate a
++ *            @ref BLE_GAP_EVT_PHY_UPDATE event if successfully executed. If @ref ble_gap_phys_t::tx_phys or @ref ble_gap_phys_t::rx_phys
++ *            is @ref BLE_GAP_PHY_AUTO, then the stack will select a PHY for the respective direction based on the peer's PHY preferences
++ *            and the local stack configuration. If the peer does not support the PHY Update Procedure, then the
++ *            resulting @ref BLE_GAP_EVT_PHY_UPDATE event will have a status set to
++ *            @ref BLE_HCI_UNSUPPORTED_REMOTE_FEATURE.
++ *            If the PHY procedure was rejected by the peer due to a procedure collision, the status will be
++ *            @ref BLE_HCI_STATUS_CODE_LMP_ERROR_TRANSACTION_COLLISION or @ref BLE_HCI_DIFFERENT_TRANSACTION_COLLISION.
++ *            If the PHY procedure was rejected by the peer for a different reason, the status will contain the reason as specified by the peer.
++ *
++ * @events
++ * @event{@ref BLE_GAP_EVT_PHY_UPDATE, Result of the PHY Update Procedure.}
++ * @endevents
++ *
++ * @mscs
++ * @mmsc{@ref BLE_GAP_CENTRAL_PHY_UPDATE}
++ * @mmsc{@ref BLE_GAP_PERIPHERAL_PHY_UPDATE}
++ * @endmscs
++ *
++ * @param[in] conn_handle   Connection handle to indicate the connection for which the PHY Update is requested.
++ * @param[in] p_gap_phys    Pointer to PHY structure.
++ *
++ * @retval ::NRF_SUCCESS Successfully requested a PHY Update.
++ * @retval ::NRF_ERROR_INVALID_ADDR Invalid pointer supplied.
++ * @retval ::BLE_ERROR_INVALID_CONN_HANDLE Invalid connection handle supplied.
++ * @retval ::NRF_ERROR_INVALID_PARAM Unsupported PHYs supplied to the call.
++ * @retval ::NRF_ERROR_INVALID_STATE Invalid state to perform operation.
++ * @retval ::NRF_ERROR_BUSY Procedure is already in progress or not allowed at this time. Process pending events and wait for the pending procedure to complete and retry.
++ *
++ */
++SVCALL(SD_BLE_GAP_PHY_UPDATE, uint32_t, sd_ble_gap_phy_update(uint16_t conn_handle, ble_gap_phys_t const *p_gap_phys));
++
+
+
+|-----------------------------------------------------------------------------|
+|  Network Privacy                                                            |
+|-----------------------------------------------------------------------------|
+
+//|
+//| Now supporting both network privacy and device privacy.
+//|
+
+  * @{ */
+ #define BLE_GAP_PRIVACY_MODE_OFF                       0x00 /**< Device will send and accept its identity address for its own address. */
+ #define BLE_GAP_PRIVACY_MODE_DEVICE_PRIVACY            0x01 /**< Device will send and accept only private addresses for its own address. */
++#define BLE_GAP_PRIVACY_MODE_NETWORK_PRIVACY           0x02 /**< Device will send and accept only private addresses for its own address,
++                                                                 and will not accept a peer using identity address as sender address when
++                                                                 the peer IRK is exchanged, non-zero and added to the identity list. */
+ /**@} */
+
+-/**@brief Device Privacy.
++/**@brief Privacy.
+  *
+  *        The privacy feature provides a way for the device to avoid being tracked over a period of time.
+  *        The privacy feature, when enabled, hides the local device identity and replaces it with a private address
+
+  *        With this key, a device can generate a random private address that can only be recognized by peers in possession of that key,
+  *        and devices can establish connections without revealing their real identities.
+  *
++ *        Both network privacy (@ref BLE_GAP_PRIVACY_MODE_NETWORK_PRIVACY) and device privacy (@ref BLE_GAP_PRIVACY_MODE_DEVICE_PRIVACY)
++ *        is supported.
++ *
+  * @note  If the device IRK is updated, the new IRK becomes the one to be distributed in all
+  *        bonding procedures performed after @ref sd_ble_gap_privacy_set returns.
+  *        The IRK distributed during bonding procedure is the device IRK that is active when @ref sd_ble_gap_sec_params_reply is called.
+  */
+ typedef struct
+ {
+   uint8_t        privacy_mode;         /**< Privacy mode, see @ref BLE_GAP_PRIVACY_MODES. Default is @ref BLE_GAP_PRIVACY_MODE_OFF. */
+   uint8_t        private_addr_type;    /**< The private address type must be either @ref BLE_GAP_ADDR_TYPE_RANDOM_PRIVATE_RESOLVABLE or @ref BLE_GAP_ADDR_TYPE_RANDOM_PRIVATE_NON_RESOLVABLE. */
+   uint16_t       private_addr_cycle_s; /**< Private address cycle interval in seconds. Providing an address cycle value of 0 will use the default value defined by @ref BLE_GAP_DEFAULT_PRIVATE_ADDR_CYCLE_INTERVAL_S. */
+   ble_gap_irk_t *p_device_irk;         /**< When used as input, pointer to IRK structure that will be used as the default IRK. If NULL, the device default IRK will be used.
+                                             When used as output, pointer to IRK structure where the current default IRK will be written to. If NULL, this argument is ignored.
+                                             By default, the default IRK is used to generate random private resolvable addresses for the local device unless instructed otherwise. */
+ } ble_gap_privacy_params_t;
+
+ #define BLE_UUID_GAP_CHARACTERISTIC_RECONN_ADDR       0x2A03 /**< Reconnection Address Characteristic. */
+ #define BLE_UUID_GAP_CHARACTERISTIC_PPCP              0x2A04 /**< Peripheral Preferred Connection Parameters Characteristic. */
+ #define BLE_UUID_GAP_CHARACTERISTIC_CAR               0x2AA6 /**< Central Address Resolution Characteristic. */
++#define BLE_UUID_GAP_CHARACTERISTIC_RPA_ONLY          0x2AC9 /**< Resolvable Private Address Only Characteristic. */
+ /** @} */
+
+
+|-----------------------------------------------------------------------------|
+|  Misc                                                                       |
+|-----------------------------------------------------------------------------|
+
+//|
+//| Some renamed defines.
+//| New BLE HCI status code: BLE_HCI_STATUS_CODE_LMP_ERROR_TRANSACTION_COLLISION
+//| Some changed documentation for SV calls
+//| Added return error code for some SVs calls: NRF_ERROR_BUSY
+//| New characteristic: UUID BLE_UUID_GAP_CHARACTERISTIC_RPA_ONLY
+//|
+
+  *
+  * @retval ::NRF_SUCCESS Successfully queued a response to the peer.
+  * @retval ::NRF_ERROR_INVALID_ADDR Invalid pointer supplied.
++ * @retval ::NRF_ERROR_BUSY The stack is busy, process pending events and retry.
+  * @retval ::BLE_ERROR_INVALID_CONN_HANDLE Invalid Connection Handle.
+  * @retval ::NRF_ERROR_INVALID_LENGTH Invalid user memory block length supplied.
+  * @retval ::NRF_ERROR_INVALID_STATE Invalid Connection state or no user memory request pending.
+  */
+ SVCALL(SD_BLE_USER_MEM_REPLY, uint32_t, sd_ble_user_mem_reply(uint16_t conn_handle, ble_user_mem_block_t const *p_block));
+
+  *
+  * @retval ::NRF_SUCCESS               Successfully queued a response to the peer, and in the case of a write operation, Attribute Table updated.
+  * @retval ::BLE_ERROR_INVALID_CONN_HANDLE Invalid Connection Handle.
++ * @retval ::NRF_ERROR_BUSY            The stack is busy, process pending events and retry.
+  * @retval ::NRF_ERROR_INVALID_ADDR    Invalid pointer supplied.
+  * @retval ::NRF_ERROR_INVALID_STATE   Invalid Connection State or no authorization request pending.
+  * @retval ::NRF_ERROR_INVALID_PARAM   Authorization op invalid,
+  *                                         handle supplied does not match requested handle,
+  *                                         or invalid data to be written provided by the application.
+  */
+ SVCALL(SD_BLE_GATTS_RW_AUTHORIZE_REPLY, uint32_t, sd_ble_gatts_rw_authorize_reply(uint16_t conn_handle, ble_gatts_rw_authorize_reply_params_t const *p_rw_authorize_reply_params));
+
+  *
+  * @retval ::NRF_SUCCESS Successfully accepted security parameter from the application.
+  * @retval ::NRF_ERROR_INVALID_ADDR Invalid pointer supplied.
++ * @retval ::NRF_ERROR_BUSY The stack is busy, process pending events and retry.
+  * @retval ::NRF_ERROR_INVALID_PARAM Invalid parameter(s) supplied.
+  * @retval ::NRF_ERROR_INVALID_STATE Invalid state to perform operation.
+  * @retval ::BLE_ERROR_INVALID_CONN_HANDLE Invalid connection handle supplied.
+  * @retval ::NRF_ERROR_NOT_SUPPORTED Setting of sign or link fields in @ref ble_gap_sec_kdist_t not supported.
+  */
+ SVCALL(SD_BLE_GAP_SEC_PARAMS_REPLY, uint32_t, sd_ble_gap_sec_params_reply(uint16_t conn_handle, uint8_t sec_status, ble_gap_sec_params_t const *p_sec_params, ble_gap_sec_keyset_t const *p_sec_keyset));
+
+
+ /*0x20 Unsupported LMP Parameter Value
+ 0x21 Role Change Not Allowed
+ */
+-#define BLE_HCI_STATUS_CODE_LMP_RESPONSE_TIMEOUT       0x22       /**< LMP Response Timeout. */
+-/*0x23 LMP Error Transaction Collision*/
+-#define BLE_HCI_STATUS_CODE_LMP_PDU_NOT_ALLOWED        0x24       /**< LMP PDU Not Allowed. */
++#define BLE_HCI_STATUS_CODE_LMP_RESPONSE_TIMEOUT            0x22       /**< LMP Response Timeout. */
++#define BLE_HCI_STATUS_CODE_LMP_ERROR_TRANSACTION_COLLISION 0x23  /**< LMP Error Transaction Collision/LL Procedure Collision. */
++#define BLE_HCI_STATUS_CODE_LMP_PDU_NOT_ALLOWED             0x24       /**< LMP PDU Not Allowed. */
+ /*0x25 Encryption Mode Not Acceptable
+ 0x26 Link Key Can Not be Changed
+ 0x27 Requested QoS Not Supported
+
+ 
+-/**@defgroup NRF_CLOCK_LF_XTAL_ACCURACY Clock accuracy
++/**@defgroup NRF_CLOCK_LF_ACCURACY Clock accuracy
+  * @{ */
+ 
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_250_PPM (0) /**< Default: 250 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_500_PPM (1) /**< 500 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_150_PPM (2) /**< 150 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_100_PPM (3) /**< 100 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_75_PPM  (4) /**< 75 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_50_PPM  (5) /**< 50 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_30_PPM  (6) /**< 30 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_20_PPM  (7) /**< 20 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_10_PPM  (8) /**< 10 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_5_PPM   (9) /**<  5 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_2_PPM  (10) /**<  2 ppm */
+-#define NRF_CLOCK_LF_XTAL_ACCURACY_1_PPM  (11) /**<  1 ppm */
++#define NRF_CLOCK_LF_ACCURACY_250_PPM (0) /**< Default: 250 ppm */
++#define NRF_CLOCK_LF_ACCURACY_500_PPM (1) /**< 500 ppm */
++#define NRF_CLOCK_LF_ACCURACY_150_PPM (2) /**< 150 ppm */
++#define NRF_CLOCK_LF_ACCURACY_100_PPM (3) /**< 100 ppm */
++#define NRF_CLOCK_LF_ACCURACY_75_PPM  (4) /**< 75 ppm */
++#define NRF_CLOCK_LF_ACCURACY_50_PPM  (5) /**< 50 ppm */
++#define NRF_CLOCK_LF_ACCURACY_30_PPM  (6) /**< 30 ppm */
++#define NRF_CLOCK_LF_ACCURACY_20_PPM  (7) /**< 20 ppm */
++#define NRF_CLOCK_LF_ACCURACY_10_PPM  (8) /**< 10 ppm */
++#define NRF_CLOCK_LF_ACCURACY_5_PPM   (9) /**<  5 ppm */
++#define NRF_CLOCK_LF_ACCURACY_2_PPM  (10) /**<  2 ppm */
++#define NRF_CLOCK_LF_ACCURACY_1_PPM  (11) /**<  1 ppm */
+
+ 
+ /**@brief Set the radio's transmit power.
+  *
+- * @param[in] tx_power Radio transmit power in dBm (accepted values are -40, -30, -20, -16, -12, -8, -4, 0, 3, and 4 dBm).
+- *
+- * @note The +3dBm setting is only available on nRF52 series ICs.
+- * @note The -30dBm setting is only available on nRF51 series ICs.
+- * @note The -40dBm setting is only available on nRF52 series ICs.
++ * @param[in] tx_power Radio transmit power in dBm (accepted values are -40, -20, -16, -12, -8, -4, 0, 3, and 4 dBm).
+  *
+  * @retval ::NRF_SUCCESS Successfully changed the transmit power.
+  * @retval ::NRF_ERROR_INVALID_PARAM Invalid parameter(s) supplied.
+ SVCALL(SD_BLE_GAP_TX_POWER_SET, uint32_t, sd_ble_gap_tx_power_set(int8_t tx_power));
+
+
+  * @endmscs
+  *
+  * @param[in] p_peer_addr   Pointer to peer address. If the use_whitelist bit is set in @ref ble_gap_scan_params_t, then this is ignored.
+- *                          If @ref ble_gap_addr_t::addr_id_peer is set then p_peer_addr must be present in the device identity list
+- *                          see @ref sd_ble_gap_device_identities_set.
+  * @param[in] p_scan_params Pointer to scan parameters structure.
+  * @param[in] p_conn_params Pointer to desired connection parameters.
+  * @param[in] conn_cfg_tag  Tag identifying a configuration set by @ref sd_ble_cfg_set or @ref
+  *                          BLE_CONN_CFG_TAG_DEFAULT to use the default connection configuration.
+  *
+  * @retval ::NRF_SUCCESS Successfully initiated connection procedure.
+  * @retval ::NRF_ERROR_INVALID_ADDR Invalid parameter(s) pointer supplied.
+  * @retval ::NRF_ERROR_INVALID_PARAM Invalid parameter(s) supplied.
+  *                                   - Invalid parameter(s) in p_scan_params or p_conn_params.
+  *                                   - Use of whitelist requested but whitelist has not been set, see @ref sd_ble_gap_whitelist_set.
+  *                                   - Peer address was not present in the device identity list, see @ref sd_ble_gap_device_identities_set.
+  * @retval ::NRF_ERROR_INVALID_STATE The SoftDevice is in an invalid state to perform this operation. This may be due to an
+  *                                   existing locally initiated connect procedure, which must complete before initiating again.
+  * @retval ::BLE_ERROR_GAP_INVALID_BLE_ADDR Invalid Peer address.
+  * @retval ::NRF_ERROR_CONN_COUNT The limit of available connections has been reached.
+  * @retval ::NRF_ERROR_BUSY The stack is busy, process pending events and retry. If another connection is being established
+  *                          wait for the corresponding @ref BLE_GAP_EVT_CONNECTED event before calling again.
+  * @retval ::NRF_ERROR_RESOURCES Not enough BLE role slots available.
+  *                               Stop one or more currently active roles (Central, Peripheral or Broadcaster) and try again
+  */
+ SVCALL(SD_BLE_GAP_CONNECT, uint32_t, sd_ble_gap_connect(ble_gap_addr_t const *p_peer_addr, ble_gap_scan_params_t const *p_scan_params, ble_gap_conn_params_t const *p_conn_params, uint8_t conn_cfg_tag));
+
+
+ /**@brief Type representing LFCLK oscillator source. */
+ typedef struct
+ {
+-  uint8_t source;        /**< LF oscillator clock source, see @ref NRF_CLOCK_LF_SRC. */
+-  uint8_t rc_ctiv;      /**< Only for NRF_CLOCK_LF_SRC_RC: Calibration timer interval in 1/4 second
+-                              units (nRF51: 1-64, nRF52: 1-32).
+-                              @note To avoid excessive clock drift, 0.5 degrees Celsius is the
+-                                    maximum temperature change allowed in one calibration timer
+-                                    interval. The interval should be selected to ensure this.
+-
+-                              @note Must be 0 if source is not NRF_CLOCK_LF_SRC_RC.  */
+-  uint8_t rc_temp_ctiv; /**<  Only for NRF_CLOCK_LF_SRC_RC: How often (in number of calibration
+-                              intervals) the RC oscillator shall be calibrated if the temperature
+-                              hasn't changed.
+-                                  0: Always calibrate even if the temperature hasn't changed.
+-                                  1: Only calibrate if the temperature has changed (nRF51 only).
+-                                  2-33: Check the temperature and only calibrate if it has changed,
+-                                        however calibration will take place every rc_temp_ctiv
+-                                        intervals in any case.
+-
+-                              @note Must be 0 if source is not NRF_CLOCK_LF_SRC_RC.
+-
+-                              @note For nRF52, the application must ensure calibration at least once
+-                                    every 8 seconds to ensure +/-250 ppm clock stability. The
+-                                    recommended configuration for NRF_CLOCK_LF_SRC_RC on nRF52 is
+-                                    rc_ctiv=16 and rc_temp_ctiv=2. This will ensure calibration at
+-                                    least once every 8 seconds and for temperature changes of 0.5
+-                                    degrees Celsius every 4 seconds. See the Product Specification
+-                                    for the nRF52 device being used for more information.*/
+-  uint8_t xtal_accuracy; /**< External crystal clock accuracy used in the LL to compute timing
+-                              windows, see @ref NRF_CLOCK_LF_XTAL_ACCURACY.
+-
+-                              @note For the NRF_CLOCK_LF_SRC_RC clock source this parameter is ignored. */
++  uint8_t source;         /**< LF oscillator clock source, see @ref NRF_CLOCK_LF_SRC. */
++  uint8_t rc_ctiv;        /**< Only for NRF_CLOCK_LF_SRC_RC: Calibration timer interval in 1/4 second
++                               units (nRF51: 1-64, nRF52: 1-32).
++                               @note To avoid excessive clock drift, 0.5 degrees Celsius is the
++                                     maximum temperature change allowed in one calibration timer
++                                     interval. The interval should be selected to ensure this.
++
++                                  @note Must be 0 if source is not NRF_CLOCK_LF_SRC_RC.  */
++  uint8_t rc_temp_ctiv;   /**<  Only for NRF_CLOCK_LF_SRC_RC: How often (in number of calibration
++                                intervals) the RC oscillator shall be calibrated if the temperature
++                                hasn't changed.
++                                     0: Always calibrate even if the temperature hasn't changed.
++                                     1: Only calibrate if the temperature has changed (nRF51 only).
++                                     2-33: Check the temperature and only calibrate if it has changed,
++                                           however calibration will take place every rc_temp_ctiv
++                                           intervals in any case.
++
++                                @note Must be 0 if source is not NRF_CLOCK_LF_SRC_RC.
++
++                                @note For nRF52, the application must ensure calibration at least once
++                                      every 8 seconds to ensure +/-250 ppm clock stability. The
++                                      recommended configuration for NRF_CLOCK_LF_SRC_RC on nRF52 is
++                                      rc_ctiv=16 and rc_temp_ctiv=2. This will ensure calibration at
++                                      least once every 8 seconds and for temperature changes of 0.5
++                                      degrees Celsius every 4 seconds. See the Product Specification
++                                      for the nRF52 device being used for more information.*/
++  uint8_t accuracy;       /**< External clock accuracy used in the LL to compute timing
++                               windows, see @ref NRF_CLOCK_LF_ACCURACY.*/
+ } nrf_clock_lf_cfg_t;
