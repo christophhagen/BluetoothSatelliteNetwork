@@ -1,6 +1,6 @@
 #include "manager.h"
 
-#include "boards.h"
+#include "boards.h" // Only needed for LEDs
 
 void receivedData(ConstantData data) {
     /** Handle the received data */
