@@ -1,5 +1,5 @@
-#define NRF_LOG_MODULE_NAME "UTI"
 #include "config.h"
+#include "logging.h"
 
 #include "util.h"
 
@@ -13,13 +13,15 @@ bool peerAddressEqual(const ble_gap_addr_t* a1, ble_gap_addr_t* a2) {
     return true;
 }
 
+// TODO: Change into macro
 /**@brief Prints the full device address */
 void printPeerAddressFull(ble_gap_addr_t a) {
-    NRF_LOG_RAW_INFO("Address %d,%d: ", a.addr_type, a.addr_id_peer);
-    NRF_LOG_RAW_INFO("%02X:%02X:%02X:%02X:%02X:%02X", a.addr[0], a.addr[1], a.addr[2], a.addr[3], a.addr[4], a.addr[5]);
+    LOG_INFO_RAW("Address %d,%d: %02X:", a.addr_type, a.addr_id_peer, a.addr[0]);
+    LOG_INFO_RAW("%02X:%02X:%02X:%02X:%02X", a.addr[1], a.addr[2], a.addr[3], a.addr[4], a.addr[5]);
 }
 
 /**@brief Prints the device address */
 void printPeerAddress(ble_gap_addr_t a) {
-    NRF_LOG_RAW_INFO("%02X:%02X:%02X:%02X:%02X:%02X", a.addr[0], a.addr[1], a.addr[2], a.addr[3], a.addr[4], a.addr[5]);
+    LOG_INFO_RAW("%02X:%02X:%02X:", a.addr[0], a.addr[1], a.addr[2]);
+    LOG_INFO_RAW("%02X:%02X:%02X", a.addr[3], a.addr[4], a.addr[5]);
 }

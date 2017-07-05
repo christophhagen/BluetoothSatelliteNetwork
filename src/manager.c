@@ -1,5 +1,9 @@
-#define NRF_LOG_MODULE_NAME "MAN"
+
+#include "manager.h"
+
+#include "advertising.h"
 #include "config.h"
+#include "connect.h"
 
 #include "app_timer.h"
 #include "ble_db_discovery.h"
@@ -9,11 +13,9 @@
 #include "ble_gattc.h"
 #include "sdk_common.h"
 #include "softdevice_handler.h"
+#include <nrf_log_ctrl.h>
 #include "nrf_soc.h" // sd_app_evt_wait ?
 
-#include "advertising.h"
-#include "connect.h"
-#include "manager.h"
 
 
 /**@brief The vendor specific UUID (bb4aff4f-ad03-415d-a96c-9d6cddda8304) */
@@ -41,7 +43,8 @@ typedef struct {
     bool                shouldConnect; //!< Set by the application and can suspend a connection. */
     bool                busy;        //!< Indicate that the connection is busy */
     bool                confirm;     //!< Request or send confirmations on this server */
-    bool                confirmToPeer;     //!< Request or send confirmations on this server */
+    bool                confirmToPeer; //!< Request or send confirmations on this server */
+    bool                updateInterval; //!< An update of the connection interval is in progress */
     uint16_t            payloadSize; //!< Maximum number of bytes which can be sent in one notification. */
     DataHandler         received;    //!< Callback for received data. */
     EventHandler        eventHandler;
@@ -136,19 +139,20 @@ static ConnectionInternal* getConnectionByAddress(const ble_gap_addr_t* address)
             return &connections[i];
         }
     }
-    NRF_LOG_DEBUG("No connection ");
+    LOG_DEBUG("No connection");
     printPeerAddress(*address);
     return 0;
 }
 
 /**@brief Reset a connection to unconnected state */
 static void resetConnection(ConnectionInternal* connection) {
-    connection->handle        = BLE_CONN_HANDLE_INVALID;
-    connection->cccdHandle    = BLE_GATT_HANDLE_INVALID;
-    connection->receiveHandle = BLE_GATT_HANDLE_INVALID;
-    connection->busy          = false;
-    connection->payloadSize   = PAYLOAD_LENGTH;
-    connection->confirmToPeer = false;
+    connection->handle         = BLE_CONN_HANDLE_INVALID;
+    connection->cccdHandle     = BLE_GATT_HANDLE_INVALID;
+    connection->receiveHandle  = BLE_GATT_HANDLE_INVALID;
+    connection->busy           = false;
+    connection->payloadSize    = PAYLOAD_LENGTH;
+    connection->confirmToPeer  = false;
+    connection->updateInterval = false;
     bufferInit(&connection->buffer);
 }
 
@@ -159,7 +163,7 @@ static ret_code_t onAdvertismentReport(const ble_gap_evt_t* event) {
 
     ConnectionInternal* client = getClientByName(name.data);
     if(client == 0) {
-        NRF_LOG_DEBUG("Device %s", (uint32_t) name.data);
+        LOG_DEBUG("Device %s", (uint32_t) name.data);
         return NRF_SUCCESS;
     }
 
@@ -167,18 +171,19 @@ static ret_code_t onAdvertismentReport(const ble_gap_evt_t* event) {
 
     RETURN_DEBUG_IF(client->handle != BLE_CONN_HANDLE_INVALID, NRF_SUCCESS, "Already connected to \"%s\"", (uint32_t) client->name);
 
+    // TODO: Save state, notify application about type of device?
     if (peerAddressEqual(&event->params.adv_report.peer_addr, &client->mainAddress)) {
-        NRF_LOG_INFO("Main device");
+        LOG_INFO("Main device");
     } else if (peerAddressEqual(&event->params.adv_report.peer_addr, &client->mainAddress)) {
-        NRF_LOG_INFO("Redundant device");
+        LOG_INFO("Redundant device");
     } else {
-        NRF_LOG_INFO("Unknown device ");
+        LOG_INFO("Unknown device ");
         client->mainAddress = event->params.adv_report.peer_addr;
         printPeerAddress(client->mainAddress);
     }
     ret_code_t error = connectInternal(&event->params.adv_report.peer_addr, getScanParams(), client->interval);
     RETURN_WARNING_ON(error, "Connecting to \"%s\" failed: %d", (uint32_t) client->name, error);
-    NRF_LOG_INFO("Connecting to \"%s\"", (uint32_t) client->name);
+    LOG_INFO("Connecting to \"%s\"", (uint32_t) client->name);
     return NRF_SUCCESS;
 }
 
@@ -201,7 +206,7 @@ static ret_code_t onNotification(const ble_evt_t* event) {
         ret_code_t error = sd_ble_gattc_hv_confirm(connection->handle, handle);
         RETURN_WARNING_ON(error, "Could not confirm %d", error);
     }
-    NRF_LOG_DEBUG("Received %d bytes on connection 0x%02x", data.length, connection->handle);
+    LOG_DEBUG("Received %d bytes on connection 0x%02x", data.length, connection->handle);
     if (connection->received != 0) {
         connection->received(data);
     }
@@ -245,7 +250,7 @@ static ret_code_t onReadResponse(const ble_evt_t* event) {
         .length = event->evt.gattc_evt.params.read_rsp.len,
     };
 
-    NRF_LOG_DEBUG("Received %d bytes on connection 0x%02x", data.length, connection->handle);
+    LOG_DEBUG("Received %d bytes on connection 0x%02x", data.length, connection->handle);
     if (connection->received != 0) {
         connection->received(data);
     }
@@ -260,10 +265,7 @@ static ret_code_t onWriteResponse(const ble_evt_t* event) {
     uint16_t handle = event->evt.gattc_evt.params.write_rsp.handle;
     bool handlesEqual = connection->cccdHandle == handle;
     RETURN_WARNING_IF(!handlesEqual, NRF_ERROR_HANDLE_INVALID, "CCCD handle mismatch 0x%02x", handle);
-    NRF_LOG_INFO("CCCD configured");
-    if (connection->eventHandler != 0) {
-        connection->eventHandler(CONNECTION_READY);
-    }
+    LOG_INFO("CCCD configured");
     return NRF_SUCCESS;
 }
 
@@ -277,13 +279,14 @@ static ret_code_t onWrite(const ble_evt_t* event) {
     RETURN_WARNING_IF(!equals, NRF_ERROR_HANDLE_INVALID, "CCCD handle mismatch: 0x%04x", writeEvent->handle);
 
     connection->confirmToPeer = ble_srv_is_indication_enabled(writeEvent->data);
+
     if (connection->confirmToPeer == false) {
-        RETURN_WARNING_IF(ble_srv_is_indication_enabled(writeEvent->data) == false, NRF_ERROR_NO_NOTIFICATIONS, "Notify and indicate disabled");
+        RETURN_WARNING_IF(!ble_srv_is_notification_enabled(writeEvent->data), NRF_ERROR_NO_NOTIFICATIONS, "Notify and indicate disabled");
     }
     if (connection->confirmToPeer) {
-        NRF_LOG_DEBUG("Indications enabled");
+        LOG_DEBUG("Indications enabled");
     } else {
-        NRF_LOG_DEBUG("Notifications enabled");
+        LOG_DEBUG("Notifications enabled");
     }
     return NRF_SUCCESS;
 }
@@ -296,9 +299,9 @@ static ret_code_t onConnected(const ble_gap_evt_t* event) {
     connection->handle = event->conn_handle;
 
     if (connection->asCentral) {
-        NRF_LOG_INFO("Connected to peripheral \"%s\"", (uint32_t) connection->name);
+        LOG_INFO("Connected to peripheral \"%s\"", (uint32_t) connection->name);
     } else {
-        NRF_LOG_INFO("Connected to central ");
+        LOG_INFO("Connected to central ");
         printPeerAddress(event->params.connected.peer_addr);
     }
 
@@ -316,8 +319,7 @@ static ret_code_t onConnected(const ble_gap_evt_t* event) {
         RETURN_WARNING_ON(error, "RSSI not enabled: %d", error);
     }
 
-    NRF_LOG_DEBUG("Discovering GATT database");
-
+    LOG_DEBUG("Discovering GATT database");
     startStopScanAndAvertising();
 
     if (connection->eventHandler != 0) {
@@ -333,9 +335,9 @@ static ret_code_t onDisconnected(const ble_evt_t* event) {
     resetConnection(connection);
 
     if (connection->asCentral) {
-        NRF_LOG_INFO("From: %s", (uint32_t) connection->name);
+        LOG_INFO("From: %s", (uint32_t) connection->name);
     } else {
-        NRF_LOG_INFO("From: ");
+        LOG_INFO("From: ");
         printPeerAddress(connection->mainAddress);
     }
 
@@ -347,12 +349,30 @@ static ret_code_t onDisconnected(const ble_evt_t* event) {
     return NRF_SUCCESS;
 }
 
+/**@brief Successfully updated connection parameters */
+static ret_code_t onGapParamUpdate(const ble_gap_evt_t* event) {
+    const ble_gap_conn_params_t* params = &event->params.conn_param_update.conn_params;
+    ConnectionInternal* connection = getConnectionByHandle(event->conn_handle);
+    RETURN_ERROR_IF(connection == 0, NRF_ERROR_HANDLE_INVALID, "Invalid handle %d", event->conn_handle);
+    connection->updateInterval = false;
+    if (connection->eventHandler != 0) {
+        connection->eventHandler(CONNECTION_UPDATED);
+    }
+    if (!connection->asCentral) {
+        connection->interval = params->min_conn_interval;
+        LOG_DEBUG("Conn interval is %d ticks\n", connection->interval);
+        return NRF_SUCCESS;
+    }
+    RETURN_ERROR_IF(connection->interval != params->min_conn_interval, NRF_ERROR_INVALID_PARAM, "Conn interval %d", params->min_conn_interval);
+    return NRF_SUCCESS;
+}
+
 /**@brief Disconnect */
 static ret_code_t onTimeout(uint16_t handle) {
     // TODO: Really disconnect after first dropped packet?
     ret_code_t error = sd_ble_gap_disconnect(handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
     RETURN_ERROR_ON(error, "Disconnect failed: %d", error);
-    NRF_LOG_DEBUG("GATT timeout");
+    LOG_DEBUG("GATT timeout");
     return NRF_SUCCESS;
 }
 
@@ -392,6 +412,7 @@ static ret_code_t onBleEvent(const ble_evt_t* event) {
         case BLE_GATTS_EVT_WRITE: return onWrite(event);
         case BLE_GAP_EVT_CONNECTED: return onConnected(&event->evt.gap_evt);
         case BLE_GAP_EVT_DISCONNECTED: return onDisconnected(event);
+        case BLE_GAP_EVT_CONN_PARAM_UPDATE: return onGapParamUpdate(&event->evt.gap_evt);
         case BLE_GATTC_EVT_TIMEOUT: return onTimeout(event->evt.gattc_evt.conn_handle);
         case BLE_GATTS_EVT_TIMEOUT: return onTimeout(event->evt.gatts_evt.conn_handle);
         case BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST: return onParamUpdate(event);
@@ -451,10 +472,10 @@ static void handleDatabaseDiscovery(ble_db_discovery_evt_t* event) {
     connection->receiveHandle = chars->characteristic.handle_value;
     connection->handle        = event->conn_handle;
 
-    NRF_LOG_INFO("Configuring CCCD, handle %d, connection %d", connection->cccdHandle, connection->handle);
+    LOG_INFO("Configuring CCCD, handle %d, connection %d", connection->cccdHandle, connection->handle);
 
     tx_message_t message;
-    uint16_t cccdValue = BLE_GATT_HVX_INDICATION; //BLE_GATT_HVX_NOTIFICATION;
+    uint16_t cccdValue = connection->confirm ? BLE_GATT_HVX_INDICATION : BLE_GATT_HVX_NOTIFICATION;
 
     message.request.gattc.params.handle   = connection->cccdHandle;
     message.request.gattc.params.len      = WRITE_MESSAGE_LENGTH;
@@ -480,11 +501,14 @@ static void handleGattEvent(nrf_ble_gatt_t* gatt, nrf_ble_gatt_evt_t const* even
             ConnectionInternal* connection = getConnectionByHandle(event->conn_handle);
             RETURN_WITH_ERROR_IF(connection == 0, "No connection");
             connection->payloadSize = event->params.att_mtu_effective - OPCODE_LENGTH - HANDLE_LENGTH;
-            NRF_LOG_INFO("Maximum payload %d", connection->payloadSize);
+            LOG_INFO("Maximum payload %d", connection->payloadSize);
+            if (connection->eventHandler != 0) {
+                connection->eventHandler(CONNECTION_READY);
+            }
         } break;
 
         case NRF_BLE_GATT_EVT_DATA_LENGTH_UPDATED: {
-            NRF_LOG_DEBUG("Data length: %u bytes", event->params.data_length);
+            LOG_DEBUG("Data length: %u bytes", event->params.data_length);
         } break;
     }
 }
@@ -493,7 +517,7 @@ static void handleGattEvent(nrf_ble_gatt_t* gatt, nrf_ble_gatt_evt_t const* even
 static ret_code_t managerInit() {
     ret_code_t error = NRF_LOG_INIT(NULL);
     RETURN_ERROR_ON(error, "Log init failed: %d", error);
-    NRF_LOG_DEBUG("Log OK");
+    LOG_DEBUG("Log OK");
 
     // Timer must be initialised before calling ble_conn_params_init()
     error = app_timer_init();
@@ -548,8 +572,8 @@ static ret_code_t managerInit() {
     // Register a BLE event handler with the SoftDevice handler library.
     error = softdevice_ble_evt_handler_set(handleBluetoothEvent);
     RETURN_ERROR_ON(error, "SD handler set failed: %d", error);
-    NRF_LOG_DEBUG("Stack OK");
 
+    LOG_DEBUG("Stack OK");
     return NRF_SUCCESS;
 }
 
@@ -561,7 +585,7 @@ static ret_code_t managerInit2(const char* name) {
 
     ret_code_t error;
     if(strlen(name) != 3) {
-        NRF_LOG_ERROR("Invalid name %s", (uint32_t) name);
+        LOG_ERROR("Invalid name %s", (uint32_t) name);
         error = sd_ble_gap_device_name_set(&sec_mode, (uint8_t const *)DEVICE_NAME, strlen(DEVICE_NAME));
         RETURN_ERROR_ON(error, "Name set failed: %d", error);
     } else {
@@ -636,12 +660,15 @@ static ret_code_t managerInit2(const char* name) {
     error = sd_ble_opt_set(BLE_COMMON_OPT_CONN_EVT_EXT, &opt);
     RETURN_ERROR_ON(error, "Event extension set failed: %d", error);
 
-    error = sd_ble_gap_tx_power_set(TX_POWER_LEVEL);
+    error = sd_ble_gap_tx_power_set(TX_POWER_LEVEL_DEFAULT);
     RETURN_ERROR_ON(error, "Power set failed: %d", error);
 
     ble_gap_addr_t ownAddress;
     error = sd_ble_gap_addr_get(&ownAddress);
     RETURN_ERROR_ON(error, "Address get failed: %d", error);
+
+    LOG_DEBUG("Manager OK, Address ");
+    printPeerAddress(ownAddress);
     return NRF_SUCCESS;
 }
 
@@ -650,6 +677,18 @@ ret_code_t initialiseManager(const char* deviceName) {
     ret_code_t error = managerInit();
     if (error != NRF_SUCCESS) { return error; }
     return managerInit2(deviceName);
+}
+
+/**@brief Limit the connection interval to acceptable values */
+static uint16_t connectionIntervalTicks(float interval) {
+    uint16_t intervalInt = (uint16_t) (interval / 1.25f);
+    if (intervalInt < CONN_INTERVAL_MIN) {
+        return CONN_INTERVAL_MIN;
+    }
+    if (intervalInt > CONN_INTERVAL_MAX) {
+        return CONN_INTERVAL_MAX;
+    }
+    return intervalInt;
 }
 
 /**@brief  Register a connection to a peripheral or a central */
@@ -676,20 +715,13 @@ uint8_t addConnection(Connection newConnection) {
     memcpy(connection->redAddress.addr, newConnection.redAddress, 6);
 
     if (connection->asCentral) {
-        connection->interval    = newConnection.interval / 1.25;
-        if (connection->interval < CONN_INTERVAL_MIN) {
-            NRF_LOG_WARNING("Connection interval to short");
-            connection->interval = CONN_INTERVAL_MIN;
-        } else if (connection->interval > CONN_INTERVAL_MAX) {
-            NRF_LOG_WARNING("Connection interval to long");
-            connection->interval = CONN_INTERVAL_MAX;
-        }
+        connection->interval = connectionIntervalTicks(newConnection.interval);
     } else {
         connection->interval = 0;
     }
 
     memcpy(connection->name, newConnection.name, DEVICE_SHORT_NAME_LENGTH+1);
-    NRF_LOG_DEBUG("Added connection %d", connectionsCount - 1);
+    LOG_DEBUG("Added connection %d, interval ticks %d", connectionsCount - 1, connection->interval);
     return connectionsCount - 1;
 }
 
@@ -730,12 +762,12 @@ ManagerStatus sendData(uint8_t connectionID, Data data) {
 
     if (status == NRF_ERROR_RESOURCES) {
         // Wait for BLE_GATTS_EVT_HVN_TX_COMPLETE.
-        NRF_LOG_WARNING("send HVX busy");
+        LOG_DEBUG("HVX busy");
         connection->busy = true;
         return MANAGER_BUSY;
     }
     RETURN_ERROR_IF(status != NRF_SUCCESS, MANAGER_SEND_FAILED, "send HVX failed: %d", status);
-    NRF_LOG_DEBUG("Sending %d bytes", data.length);
+    LOG_DEBUG("Sending %d bytes", data.length);
     return MANAGER_SUCCESS;
 }
 
@@ -750,7 +782,21 @@ ManagerStatus provideData(uint8_t connectionID, Data data) {
 
     ret_code_t error = sd_ble_gatts_value_set(connection->handle, receiveHandles.value_handle, &valueParam);
     RETURN_ERROR_IF(error != NRF_SUCCESS, MANAGER_PROVIDE_FAILED, "Set GATTS value failed: %d", error);
-    NRF_LOG_DEBUG("Providing %d bytes", valueParam.len);
+    LOG_DEBUG("Providing %d bytes", valueParam.len);
+    return MANAGER_SUCCESS;
+}
+
+/**@brief Update the connection interval (only for connection as master) */
+ManagerStatus updateConnectionInterval(uint8_t connectionID, float interval) {
+    RETURN_ERROR_IF(connectionID >= connectionsCount, MANAGER_INVALID_ID, "Invalid ID %d", connectionID);
+    ConnectionInternal* connection = &connections[connectionID];
+    RETURN_ERROR_IF(!connection->asCentral, MANAGER_NOT_MASTER, "Not connected as master %d", connectionID);
+
+    uint16_t intervalTicks = connectionIntervalTicks(interval);
+    ret_code_t status = changeIntervalToPeripheral(connection->handle, intervalTicks);
+    RETURN_ERROR_ON_ERROR(status, MANAGER_UPDATE_FAILED, "Could not update connection %d", connectionID);
+    connection->updateInterval = true;
+    connection->interval = intervalTicks;
     return MANAGER_SUCCESS;
 }
 
@@ -767,6 +813,7 @@ bool isReady(uint8_t ID) {
     ConnectionInternal* connection = &connections[ID];
 
     if (connection->handle == BLE_CONN_HANDLE_INVALID) { return false; }
+    if (connection->updateInterval) { return false; }
     return (connection->payloadSize != 0);
 }
 
@@ -815,7 +862,7 @@ float getTemperature() {
 
 /**@brief Start an endless loop, processing the log and sleeping the chip */
 void loopAndLog() {
-    NRF_LOG_DEBUG("Started loop");
+    LOG_DEBUG("Started loop");
     for (;;) {
         if (!NRF_LOG_PROCESS()) {
             sd_app_evt_wait();
@@ -832,5 +879,11 @@ bool startTimer(uint16_t msInterval, void (*timerCallback) (void* context)) {
 
     error = app_timer_start(timerID, APP_TIMER_TICKS(msInterval), NULL);
     RETURN_ERROR_IF(error != NRF_SUCCESS, false, "Start 0x%04d", error);
+    return true;
+}
+
+bool setOutputPower(OutputPower dB) {
+    ret_code_t status = sd_ble_gap_tx_power_set(dB);
+    RETURN_ERROR_ON_ERROR(status, false, "Power set failed: %d", status);
     return true;
 }

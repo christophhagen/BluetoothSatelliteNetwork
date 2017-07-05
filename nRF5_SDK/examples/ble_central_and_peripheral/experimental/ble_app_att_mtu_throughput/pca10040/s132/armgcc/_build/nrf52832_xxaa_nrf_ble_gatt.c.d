@@ -69,6 +69,7 @@ _build/nrf52832_xxaa_nrf_ble_gatt.c.o: \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h
 
 ../config/sdk_config.h:
@@ -208,5 +209,7 @@ _build/nrf52832_xxaa_nrf_ble_gatt.c.o: \
 ../../../../../../../components/libraries/util/sdk_macros.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:

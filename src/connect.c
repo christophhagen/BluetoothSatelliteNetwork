@@ -2,6 +2,7 @@
 #include "config.h"
 
 #include "connect.h"
+#include "logging.h"
 
 #include "app_timer.h"
 
@@ -59,7 +60,9 @@ ret_code_t changeIntervalToPeripheral(uint16_t handle, uint16_t interval) {
  */
 static void onConnectionParamsEvent(ble_conn_params_evt_t * p_evt) {
     if (p_evt->evt_type == BLE_CONN_PARAMS_EVT_SUCCEEDED) {
-        NRF_LOG_DEBUG("Configured");
+        LOG_DEBUG("Configured");
+    } else {
+        // TODO: Notify manager that update has failed
     }
 }
 

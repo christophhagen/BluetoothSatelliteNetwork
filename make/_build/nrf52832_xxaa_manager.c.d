@@ -1,6 +1,4 @@
-_build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
- ../headers/sdk_config.h ../headers/mod_log.h \
- ../nRF5_SDK/components/libraries/util/sdk_common.h \
+_build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/manager.h \
  /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdint.h \
  /usr/local/gcc-arm/arm-none-eabi/include/stdint.h \
  /usr/local/gcc-arm/arm-none-eabi/include/machine/_default_types.h \
@@ -9,6 +7,9 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
  /usr/local/gcc-arm/arm-none-eabi/include/sys/_intsup.h \
  /usr/local/gcc-arm/arm-none-eabi/include/sys/_stdint.h \
  /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdbool.h \
+ ../headers/logging.h ../headers/config.h ../headers/logging_internal.h \
+ ../nRF5_SDK/components/libraries/log/nrf_log.h \
+ ../nRF5_SDK/components/libraries/util/sdk_common.h \
  /usr/local/gcc-arm/arm-none-eabi/include/string.h \
  /usr/local/gcc-arm/arm-none-eabi/include/_ansi.h \
  /usr/local/gcc-arm/arm-none-eabi/include/newlib.h \
@@ -42,49 +43,31 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
  ../nRF5_SDK/components/device/nrf52_name_change.h \
  ../nRF5_SDK/components/device/compiler_abstraction.h \
  ../nRF5_SDK/components/libraries/util/sdk_macros.h \
- ../headers/mod_log_internal.h \
- ../nRF5_SDK/components/libraries/util/app_util.h \
- ../nRF5_SDK/components/libraries/log/nrf_log_ctrl.h \
+ ../nRF5_SDK/components/libraries/strerror/nrf_strerror.h \
  ../nRF5_SDK/components/libraries/util/sdk_errors.h \
- ../nRF5_SDK/components/libraries/log/src/nrf_log_ctrl_internal.h \
- ../headers/error.h ../nRF5_SDK/components/libraries/timer/app_timer.h \
- ../nRF5_SDK/components/libraries/util/app_error.h \
- /usr/local/gcc-arm/arm-none-eabi/include/stdio.h \
- /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h \
- /usr/local/gcc-arm/arm-none-eabi/include/sys/types.h \
- /usr/local/gcc-arm/arm-none-eabi/include/machine/types.h \
- /usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h \
- ../nRF5_SDK/components/libraries/util/app_error_weak.h \
- ../nRF5_SDK/components/ble/ble_db_discovery/ble_db_discovery.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_ranges.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_types.h \
+ ../nRF5_SDK/components/libraries/log/src/nrf_log_internal.h \
+ ../nRF5_SDK/components/libraries/util/app_util.h ../headers/sdk_config.h \
+ ../headers/util.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_types.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_ranges.h \
  ../nRF5_SDK/components/softdevice/s132/headers/nrf_svc.h \
+ ../headers/buffer.h ../nRF5_SDK/components/ble/common/ble_srv_common.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_types.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_l2cap.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_err.h \
  ../nRF5_SDK/components/softdevice/s132/headers/nrf_error.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_gatts.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_gattc.h \
- ../nRF5_SDK/components/ble/common/ble_srv_common.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_types.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h \
  ../nRF5_SDK/components/softdevice/s132/headers/ble_gatt.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_gattc.h \
+ ../nRF5_SDK/components/ble/ble_db_discovery/ble_db_discovery.h \
  ../nRF5_SDK/components/ble/common/ble_gatt_db.h \
- ../nRF5_SDK/components/softdevice/s132/headers/ble_hci.h \
- ../nRF5_SDK/components/softdevice/common/softdevice_handler/softdevice_handler.h \
- /usr/local/gcc-arm/arm-none-eabi/include/stdlib.h \
- /usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h \
- ../nRF5_SDK/components/libraries/util/nordic_common.h \
- ../nRF5_SDK/components/softdevice/s132/headers/nrf_sdm.h \
- ../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h \
- ../nRF5_SDK/components/softdevice/s132/headers/nrf_error_soc.h \
- ../nRF5_SDK/components/softdevice/s132/headers/nrf_error_sdm.h \
- ../nRF5_SDK/components/softdevice/common/softdevice_handler/ble_stack_handler_types.h \
- ../nRF5_SDK/components/softdevice/common/softdevice_handler/ant_stack_handler_types.h \
- ../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h \
+ ../nRF5_SDK/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
+ ../nRF5_SDK/components/drivers_nrf/hal/nrf_temp.h \
  ../headers/advertising.h ../nRF5_SDK/components/libraries/bsp/bsp.h \
  ../nRF5_SDK/components/boards/boards.h \
  ../nRF5_SDK/components/drivers_nrf/hal/nrf_gpio.h \
@@ -92,20 +75,37 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
  ../nRF5_SDK/components/device/nrf52832_peripherals.h \
  ../nRF5_SDK/components/libraries/util/nrf_assert.h \
  ../nRF5_SDK/components/libraries/util/app_error.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/stdio.h \
+ /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/sys/types.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/machine/types.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h \
+ ../nRF5_SDK/components/libraries/util/app_error_weak.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/stdlib.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h \
  ../nRF5_SDK/components/boards/pca10040.h \
- ../nRF5_SDK/components/libraries/button/app_button.h ../headers/util.h \
+ ../nRF5_SDK/components/libraries/button/app_button.h \
+ ../nRF5_SDK/components/libraries/util/app_error.h ../headers/config.h \
  ../headers/connect.h ../nRF5_SDK/components/ble/common/ble_conn_params.h \
- ../nRF5_SDK/components/ble/common/ble_srv_common.h ../headers/manager.h \
- ../nRF5_SDK/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
- ../nRF5_SDK/components/drivers_nrf/hal/nrf_temp.h ../headers/buffer.h
+ ../nRF5_SDK/components/ble/common/ble_srv_common.h \
+ ../nRF5_SDK/components/libraries/timer/app_timer.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/ble_hci.h \
+ ../nRF5_SDK/components/softdevice/common/softdevice_handler/softdevice_handler.h \
+ ../nRF5_SDK/components/libraries/util/nordic_common.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_sdm.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_error_soc.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_error_sdm.h \
+ ../nRF5_SDK/components/softdevice/common/softdevice_handler/ble_stack_handler_types.h \
+ ../nRF5_SDK/components/softdevice/common/softdevice_handler/ant_stack_handler_types.h \
+ ../nRF5_SDK/components/libraries/log/nrf_log_ctrl.h \
+ ../nRF5_SDK/components/libraries/log/src/nrf_log_ctrl_internal.h \
+ ../nRF5_SDK/components/libraries/util/app_util_platform.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h \
+ ../nRF5_SDK/components/softdevice/s132/headers/nrf_nvic.h \
+ ../nRF5_SDK/components/libraries/util/nrf_assert.h
 
-../headers/config.h:
-
-../headers/sdk_config.h:
-
-../headers/mod_log.h:
-
-../nRF5_SDK/components/libraries/util/sdk_common.h:
+../headers/manager.h:
 
 /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdint.h:
 
@@ -122,6 +122,16 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
 /usr/local/gcc-arm/arm-none-eabi/include/sys/_stdint.h:
 
 /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdbool.h:
+
+../headers/logging.h:
+
+../headers/config.h:
+
+../headers/logging_internal.h:
+
+../nRF5_SDK/components/libraries/log/nrf_log.h:
+
+../nRF5_SDK/components/libraries/util/sdk_common.h:
 
 /usr/local/gcc-arm/arm-none-eabi/include/string.h:
 
@@ -189,45 +199,35 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
 
 ../nRF5_SDK/components/libraries/util/sdk_macros.h:
 
-../headers/mod_log_internal.h:
-
-../nRF5_SDK/components/libraries/util/app_util.h:
-
-../nRF5_SDK/components/libraries/log/nrf_log_ctrl.h:
+../nRF5_SDK/components/libraries/strerror/nrf_strerror.h:
 
 ../nRF5_SDK/components/libraries/util/sdk_errors.h:
 
-../nRF5_SDK/components/libraries/log/src/nrf_log_ctrl_internal.h:
+../nRF5_SDK/components/libraries/log/src/nrf_log_internal.h:
 
-../headers/error.h:
+../nRF5_SDK/components/libraries/util/app_util.h:
 
-../nRF5_SDK/components/libraries/timer/app_timer.h:
+../headers/sdk_config.h:
 
-../nRF5_SDK/components/libraries/util/app_error.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/stdio.h:
-
-/usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/sys/types.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/machine/types.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h:
-
-../nRF5_SDK/components/libraries/util/app_error_weak.h:
-
-../nRF5_SDK/components/ble/ble_db_discovery/ble_db_discovery.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble_ranges.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble_types.h:
+../headers/util.h:
 
 ../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h:
 
+../nRF5_SDK/components/softdevice/s132/headers/ble_types.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/ble_ranges.h:
+
 ../nRF5_SDK/components/softdevice/s132/headers/nrf_svc.h:
+
+../headers/buffer.h:
+
+../nRF5_SDK/components/ble/common/ble_srv_common.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/ble_types.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/ble.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h:
 
 ../nRF5_SDK/components/softdevice/s132/headers/ble_l2cap.h:
 
@@ -241,41 +241,17 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
 
 ../nRF5_SDK/components/softdevice/s132/headers/ble_gatts.h:
 
+../nRF5_SDK/components/softdevice/s132/headers/ble_gatt.h:
+
 ../nRF5_SDK/components/softdevice/s132/headers/ble_gattc.h:
 
-../nRF5_SDK/components/ble/common/ble_srv_common.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble_types.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble_gap.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/ble_gatt.h:
+../nRF5_SDK/components/ble/ble_db_discovery/ble_db_discovery.h:
 
 ../nRF5_SDK/components/ble/common/ble_gatt_db.h:
 
-../nRF5_SDK/components/softdevice/s132/headers/ble_hci.h:
+../nRF5_SDK/components/ble/nrf_ble_gatt/nrf_ble_gatt.h:
 
-../nRF5_SDK/components/softdevice/common/softdevice_handler/softdevice_handler.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/stdlib.h:
-
-/usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h:
-
-../nRF5_SDK/components/libraries/util/nordic_common.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/nrf_sdm.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/nrf_error_soc.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/nrf_error_sdm.h:
-
-../nRF5_SDK/components/softdevice/common/softdevice_handler/ble_stack_handler_types.h:
-
-../nRF5_SDK/components/softdevice/common/softdevice_handler/ant_stack_handler_types.h:
-
-../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h:
+../nRF5_SDK/components/drivers_nrf/hal/nrf_temp.h:
 
 ../headers/advertising.h:
 
@@ -293,11 +269,29 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
 
 ../nRF5_SDK/components/libraries/util/app_error.h:
 
+/usr/local/gcc-arm/arm-none-eabi/include/stdio.h:
+
+/usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/sys/types.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/machine/types.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h:
+
+../nRF5_SDK/components/libraries/util/app_error_weak.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/stdlib.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h:
+
 ../nRF5_SDK/components/boards/pca10040.h:
 
 ../nRF5_SDK/components/libraries/button/app_button.h:
 
-../headers/util.h:
+../nRF5_SDK/components/libraries/util/app_error.h:
+
+../headers/config.h:
 
 ../headers/connect.h:
 
@@ -305,10 +299,34 @@ _build/nrf52832_xxaa_manager.c.o: ../src/manager.c ../headers/config.h \
 
 ../nRF5_SDK/components/ble/common/ble_srv_common.h:
 
-../headers/manager.h:
+../nRF5_SDK/components/libraries/timer/app_timer.h:
 
-../nRF5_SDK/components/ble/nrf_ble_gatt/nrf_ble_gatt.h:
+../nRF5_SDK/components/softdevice/s132/headers/ble_hci.h:
 
-../nRF5_SDK/components/drivers_nrf/hal/nrf_temp.h:
+../nRF5_SDK/components/softdevice/common/softdevice_handler/softdevice_handler.h:
 
-../headers/buffer.h:
+../nRF5_SDK/components/libraries/util/nordic_common.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_sdm.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_error_soc.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_error_sdm.h:
+
+../nRF5_SDK/components/softdevice/common/softdevice_handler/ble_stack_handler_types.h:
+
+../nRF5_SDK/components/softdevice/common/softdevice_handler/ant_stack_handler_types.h:
+
+../nRF5_SDK/components/libraries/log/nrf_log_ctrl.h:
+
+../nRF5_SDK/components/libraries/log/src/nrf_log_ctrl_internal.h:
+
+../nRF5_SDK/components/libraries/util/app_util_platform.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_soc.h:
+
+../nRF5_SDK/components/softdevice/s132/headers/nrf_nvic.h:
+
+../nRF5_SDK/components/libraries/util/nrf_assert.h:

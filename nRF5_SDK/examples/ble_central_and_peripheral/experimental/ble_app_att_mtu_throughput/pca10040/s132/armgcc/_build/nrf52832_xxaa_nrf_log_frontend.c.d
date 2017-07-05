@@ -41,7 +41,31 @@ _build/nrf52832_xxaa_nrf_log_frontend.c.o: \
  ../../../../../../../components/device/nrf51_to_nrf52.h \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
- ../../../../../../../components/libraries/util/sdk_macros.h
+ ../../../../../../../components/libraries/util/sdk_macros.h \
+ ../../../../../../../components/libraries/util/app_util.h \
+ ../../../../../../../components/libraries/util/app_util_platform.h \
+ ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
+ ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
+ ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
+ ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
+ ../../../../../../../components/libraries/util/nrf_assert.h \
+ ../../../../../../../components/libraries/util/app_error.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/stdio.h \
+ /usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/sys/types.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/machine/types.h \
+ /usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h \
+ ../../../../../../../components/libraries/util/app_error_weak.h \
+ ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
+ ../../../../../../../components/libraries/util/sdk_errors.h \
+ ../../../../../../../components/libraries/log/src/nrf_log_internal.h \
+ ../../../../../../../components/libraries/log/src/nrf_log_internal.h \
+ ../../../../../../../components/libraries/log/nrf_log_backend.h \
+ ../../../../../../../components/libraries/log/nrf_log_ctrl.h \
+ ../../../../../../../components/libraries/log/src/nrf_log_ctrl_internal.h \
+ ../../../../../../../components/libraries/log/nrf_log_ctrl.h
 
 ../../../../../../../components/libraries/util/sdk_common.h:
 
@@ -126,3 +150,51 @@ _build/nrf52832_xxaa_nrf_log_frontend.c.o: \
 ../../../../../../../components/device/compiler_abstraction.h:
 
 ../../../../../../../components/libraries/util/sdk_macros.h:
+
+../../../../../../../components/libraries/util/app_util.h:
+
+../../../../../../../components/libraries/util/app_util_platform.h:
+
+../../../../../../../components/softdevice/s132/headers/nrf_soc.h:
+
+../../../../../../../components/softdevice/s132/headers/nrf_svc.h:
+
+../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h:
+
+../../../../../../../components/softdevice/s132/headers/nrf_error.h:
+
+../../../../../../../components/softdevice/s132/headers/nrf_nvic.h:
+
+../../../../../../../components/libraries/util/nrf_assert.h:
+
+../../../../../../../components/libraries/util/app_error.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/stdio.h:
+
+/usr/local/gcc-arm/lib/gcc/arm-none-eabi/5.4.1/include/stdarg.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/sys/types.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/machine/types.h:
+
+/usr/local/gcc-arm/arm-none-eabi/include/sys/stdio.h:
+
+../../../../../../../components/libraries/util/app_error_weak.h:
+
+../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
+
+../../../../../../../components/libraries/util/sdk_errors.h:
+
+../../../../../../../components/libraries/log/src/nrf_log_internal.h:
+
+../../../../../../../components/libraries/log/src/nrf_log_internal.h:
+
+../../../../../../../components/libraries/log/nrf_log_backend.h:
+
+../../../../../../../components/libraries/log/nrf_log_ctrl.h:
+
+../../../../../../../components/libraries/log/src/nrf_log_ctrl_internal.h:
+
+../../../../../../../components/libraries/log/nrf_log_ctrl.h:

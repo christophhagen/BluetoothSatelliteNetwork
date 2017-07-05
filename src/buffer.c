@@ -4,7 +4,7 @@
 #include "ble_gattc.h"
 
 #include "buffer.h"
-#include "error.h"
+#include "logging.h"
 
 void bufferInit(buffer_t* buffer) {
     buffer->writeIndex = 0;

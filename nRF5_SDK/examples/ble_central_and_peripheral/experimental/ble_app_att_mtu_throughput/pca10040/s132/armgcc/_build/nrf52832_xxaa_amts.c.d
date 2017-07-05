@@ -71,6 +71,7 @@ _build/nrf52832_xxaa_amts.c.o: ../../../amts.c ../../../amt.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/softdevice/s132/headers/ble_err.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h
 
 ../../../amt.h:
@@ -218,5 +219,7 @@ _build/nrf52832_xxaa_amts.c.o: ../../../amts.c ../../../amt.h \
 ../../../../../../../components/softdevice/s132/headers/ble_err.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:

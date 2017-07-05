@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "logging.h"
+
 #include "app_error.h"
 #include "ble_conn_params.h"
 #include "ble_gap.h"

@@ -64,6 +64,8 @@ _build/nrf52832_xxaa_ble_db_discovery.c.o: \
  /usr/local/gcc-arm/arm-none-eabi/include/stdlib.h \
  /usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
+ ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h
 
 ../../../../../../../components/libraries/util/sdk_common.h:
@@ -193,5 +195,9 @@ _build/nrf52832_xxaa_ble_db_discovery.c.o: \
 /usr/local/gcc-arm/arm-none-eabi/include/machine/stdlib.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
+
+../../../../../../../components/libraries/util/sdk_errors.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:

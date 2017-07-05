@@ -82,6 +82,7 @@ _build/nrf52832_xxaa_nrf_drv_clock.c.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
  ../../../../../../../components/softdevice/common/softdevice_handler/ant_stack_handler_types.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h \
  ../../../../../../../components/libraries/log/nrf_log_ctrl.h \
  ../../../../../../../components/libraries/log/src/nrf_log_ctrl_internal.h
@@ -249,6 +250,8 @@ _build/nrf52832_xxaa_nrf_drv_clock.c.o: \
 ../../../../../../../components/softdevice/common/softdevice_handler/ant_stack_handler_types.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:
 

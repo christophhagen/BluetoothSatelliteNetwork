@@ -1,5 +1,5 @@
-#define NRF_LOG_ENABLED 0
-#define NRF_LOG_DEFAULT_LEVEL 0
+#define NRF_LOG_ENABLED 1
+#define NRF_LOG_DEFAULT_LEVEL 3
 
 #ifndef SDK_CONFIG_H
 #define SDK_CONFIG_H

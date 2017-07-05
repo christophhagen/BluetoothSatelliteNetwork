@@ -1,0 +1,25 @@
+var group___n_r_f___s_d_m___d_e_f_i_n_e_s =
+[
+    [ "Clock accuracy", "group___n_r_f___c_l_o_c_k___l_f___x_t_a_l___a_c_c_u_r_a_c_y.html", "group___n_r_f___c_l_o_c_k___l_f___x_t_a_l___a_c_c_u_r_a_c_y" ],
+    [ "Fault ID ranges", "group___n_r_f___f_a_u_l_t___i_d___r_a_n_g_e_s.html", "group___n_r_f___f_a_u_l_t___i_d___r_a_n_g_e_s" ],
+    [ "Fault ID types", "group___n_r_f___f_a_u_l_t___i_d_s.html", "group___n_r_f___f_a_u_l_t___i_d_s" ],
+    [ "Possible LFCLK oscillator sources", "group___n_r_f___c_l_o_c_k___l_f___s_r_c.html", "group___n_r_f___c_l_o_c_k___l_f___s_r_c" ],
+    [ "SD_BUGFIX_VERSION", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaf3636627dceef01b2b09f6e053e50dc1", null ],
+    [ "SD_FWID_GET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gab5952af335f9794ce1dea58e971fd2b0", null ],
+    [ "SD_FWID_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaaeb986ec22f9d0f8078b4cc72af678e8", null ],
+    [ "SD_ID_GET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga89a210557d28f3756659bc305965da42", null ],
+    [ "SD_ID_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gac2c360c58a242ebd684d144107fd7021", null ],
+    [ "SD_INFO_STRUCT_SIZE_GET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaa1ba088a3c005b2a3b79608444773809", null ],
+    [ "SD_INFO_STRUCT_SIZE_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga0b556931f4f62e8644db2ecac58d2819", null ],
+    [ "SD_MAJOR_VERSION", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga133b1578cb600f091d96256b17132f4e", null ],
+    [ "SD_MINOR_VERSION", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga3fa4150fa189d44579daae0fcc1a54ef", null ],
+    [ "SD_SIZE_GET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga6127729e509af1507f2ec7264ca9127c", null ],
+    [ "SD_SIZE_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gab7516549adb41718fe920cb262c108dd", null ],
+    [ "SD_VERSION", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaa8cfc1717fb1c35dccbd6cac6e9f54a4", null ],
+    [ "SD_VERSION_GET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga094f0ac1af98b519fab9138593ab1180", null ],
+    [ "SD_VERSION_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#ga707f3f60beea1e01c5f2e640b5193901", null ],
+    [ "SDM_INFO_FIELD_INVALID", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gac889b20f9ad992e63d1ac1a818a63dd5", null ],
+    [ "SDM_SVC_BASE", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaa620a383a50dd98d8319832cedc20a19", null ],
+    [ "SOFTDEVICE_INFO_STRUCT_ADDRESS", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gad8fec8c13f31f43d98916be2de5599e2", null ],
+    [ "SOFTDEVICE_INFO_STRUCT_OFFSET", "group___n_r_f___s_d_m___d_e_f_i_n_e_s.html#gaaa4ad9dc8ecee6374573270fd79dfb26", null ]
+];

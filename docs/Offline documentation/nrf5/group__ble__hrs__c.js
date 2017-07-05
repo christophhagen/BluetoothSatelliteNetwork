@@ -1,0 +1,9 @@
+var group__ble__hrs__c =
+[
+    [ "Enumerations", "group__hrs__c__enums.html", "group__hrs__c__enums" ],
+    [ "Structures", "group__hrs__c__structs.html", "group__hrs__c__structs" ],
+    [ "Types", "group__hrs__c__types.html", "group__hrs__c__types" ],
+    [ "Functions", "group__hrs__c__functions.html", "group__hrs__c__functions" ],
+    [ "Heart Rate Service Client configuration", "group__ble__hrs__c__config.html", "group__ble__hrs__c__config" ],
+    [ "BLE_HRS_C_RR_INTERVALS_MAX_CNT", "group__ble__hrs__c.html#gaca23b7aea5e253e75bfbf4fe2b91a5f1", null ]
+];

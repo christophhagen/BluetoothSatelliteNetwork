@@ -15,6 +15,7 @@ SRC_FILES += \
   $(PROJ_DIR)/src/buffer.c \
   $(PROJ_DIR)/src/counter.c \
   $(PROJ_DIR)/src/connect.c \
+  $(PROJ_DIR)/src/logging.c \
   $(PROJ_DIR)/src/manager.c \
   $(PROJ_DIR)/src/util.c \
   $(SDK_ROOT)/components/boards/boards.c \

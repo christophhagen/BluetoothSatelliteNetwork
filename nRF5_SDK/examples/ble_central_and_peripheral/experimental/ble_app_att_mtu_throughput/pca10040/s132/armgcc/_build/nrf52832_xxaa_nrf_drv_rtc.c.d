@@ -65,6 +65,7 @@ _build/nrf52832_xxaa_nrf_drv_rtc.c.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h \
  ../../../../../../../components/libraries/util/app_util.h \
  ../../../../../../../components/libraries/log/nrf_log_ctrl.h \
@@ -199,6 +200,8 @@ _build/nrf52832_xxaa_nrf_drv_rtc.c.o: \
 ../../../../../../../components/libraries/util/nrf_assert.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:
 

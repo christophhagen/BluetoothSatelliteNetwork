@@ -1,11 +1,11 @@
-#define NRF_LOG_MODULE_NAME "ADV"
+
+#include "logging.h"
+#include "advertising.h"
 #include "config.h"
+#include "util.h"
 
 #include "ble_advdata.h"
 #include "sdk_errors.h"
-
-#include "advertising.h"
-#include "util.h"
 
 // Scan parameters requested for scanning and connection.
 static ble_gap_scan_params_t const scanParameters = {

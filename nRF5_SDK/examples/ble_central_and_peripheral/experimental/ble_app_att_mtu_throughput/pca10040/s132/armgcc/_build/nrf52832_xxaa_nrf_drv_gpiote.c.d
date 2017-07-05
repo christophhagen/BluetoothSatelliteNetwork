@@ -68,6 +68,7 @@ _build/nrf52832_xxaa_nrf_drv_gpiote.c.o: \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/nrf_bitmask.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h \
  ../../../../../../../components/libraries/util/app_util.h \
  ../../../../../../../components/libraries/log/nrf_log_ctrl.h \
@@ -208,6 +209,8 @@ _build/nrf52832_xxaa_nrf_drv_gpiote.c.o: \
 ../../../../../../../components/libraries/util/nrf_bitmask.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:
 

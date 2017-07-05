@@ -4,13 +4,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "logging.h"
+#include "util.h"
+#include "buffer.h"
+
 #include "ble.h"
 #include "ble_db_discovery.h"
 #include "nrf_ble_gatt.h"
 #include "nrf_temp.h"  // Temperature measurements
 
-#include "util.h"
-#include "buffer.h"
 
 /**@cond To Make Doxygen skip documentation generation for this file.
  * @{
@@ -42,6 +44,8 @@ typedef enum {
     MANAGER_SEND_FAILED = 0x08,
     MANAGER_NO_NOTIFICATIONS = 0x09,
     MANAGER_NO_INDICATIONS = 0x10,
+    MANAGER_NOT_MASTER = 0x11,
+    MANAGER_UPDATE_FAILED = 0x12,
 } ManagerStatus;
 
 typedef enum {
@@ -50,7 +54,19 @@ typedef enum {
     DISCONNECTED = 3,
     DATA_ARRIVED_AT_PEER = 4,
     DATA_SENT_TO_PEER = 5,
+    CONNECTION_UPDATED = 6,
 } ManagerEvent;
+
+typedef enum {
+    TX_POWER_DB_MINUS_40 = -40,
+    TX_POWER_DB_MINUS_20 = -20,
+    TX_POWER_DB_MINUS_16 = -16,
+    TX_POWER_DB_MINUS_12 = -12,
+    TX_POWER_DB_MINUS_8  =  -8,
+    TX_POWER_DB_MINUS_4  =  -4,
+    TX_POWER_DB_0        =   0,
+    TX_POWER_DB_PLUS_4   =   4,
+} OutputPower;
 
 /** A callback function for requested data */
 typedef void (*DataHandler) (ConstantData data);
@@ -89,6 +105,9 @@ bool disconnect(uint8_t ID);
 /**@brief provide data over a connection for retrival by request */
 ManagerStatus provideData(uint8_t ID, Data data);
 
+/**@brief Update the connection interval (only for connection as master) */
+ManagerStatus updateConnectionInterval(uint8_t connectionID, float interval);
+
 /**@brief send data over a connection */
 ManagerStatus sendData(uint8_t ID, Data data);
 
@@ -106,5 +125,7 @@ void loopAndLog();
 
 /**@brief Call the timerCallback in the specified interval */
 bool startTimer(uint16_t msInterval, void (*timerCallback) (void* context));
+
+bool setOutputPower(OutputPower dB);
 
 #endif

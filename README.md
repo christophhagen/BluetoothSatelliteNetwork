@@ -9,11 +9,17 @@ This repository provides the code that has been developed for the master thesis 
 The files provided here should be self-sufficient, since the complete SDK from Nordic Semiconductor is included in this repository. To use the code, follow these steps:
 
 1. Download the repository
-2. Connect the chip through a J-Link interface with the computer, or connect the nRF52 Development Kit via USB
-3. Use a terminal and cd into the `make` folder of this repository
-4. Run `make flash_softdevice` to load the Bluetooth Stack onto the chip
-5. Run `make flash` to load the user code to the chip
-6. The chip should be up and running
+2. Install gcc-arm-none-eabi for your system.
+3. Install nrfjprog for your system from [here](http://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832) (under downloads)
+4. Download the [Segger J-Link Software and Documentation pack](https://www.segger.com/downloads/jlink) for your system
+3. Adjust `makefile.common` in the directory `SDK_ROOT/components/toolchain/gcc` to point to your gcc installation
+4. Add the directory of your `nrfjprog` installation to your path variables. You can check that it worked with the command `nrfjprog --version`, which should give you some short information.
+4. Connect the chip through a J-Link interface with the computer, or connect the nRF52 Development Kit via USB
+5. power the chip or turn on the power switch on the development board (an LED should be on)
+5. Use a terminal and cd into the `make` folder of this repository
+6. Run `make flash_softdevice` to load the Bluetooth Stack onto the chip
+7. Run `make flash` to load the user code to the chip
+8. The chip should be up and running
 
 After this basic setup is working, use any code editor to modify the application code (for example [Atom](https://atom.io)).
 

@@ -80,6 +80,7 @@ _build/nrf52832_xxaa_softdevice_handler.c.o: \
  ../../../../../../../components/drivers_nrf/hal/nrf_clock.h \
  ../../../../../../../components/drivers_nrf/common/nrf_drv_common.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
+ ../../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../../components/libraries/log/src/nrf_log_internal.h
 
 ../../../../../../../components/softdevice/common/softdevice_handler/softdevice_handler.h:
@@ -241,5 +242,7 @@ _build/nrf52832_xxaa_softdevice_handler.c.o: \
 ../../../../../../../components/drivers_nrf/common/nrf_drv_common.h:
 
 ../../../../../../../components/libraries/log/nrf_log.h:
+
+../../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../../components/libraries/log/src/nrf_log_internal.h:
