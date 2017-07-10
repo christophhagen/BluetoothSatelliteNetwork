@@ -2,7 +2,7 @@
 #define CONFIG_H__
 
 /** The type of logging to be done */
-#define LOG_LEVEL                       1
+#define LOG_LEVEL                       3
 
 /** Include source file and line number in log entries */
 #define LOG_CODE_POSITION               1

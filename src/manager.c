@@ -669,6 +669,7 @@ static ret_code_t managerInit2(const char* name) {
 
     LOG_DEBUG("Manager OK, Address ");
     printPeerAddress(ownAddress);
+    LOG_DEBUG("\n");
     return NRF_SUCCESS;
 }
 
