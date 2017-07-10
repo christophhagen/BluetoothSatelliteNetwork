@@ -30,7 +30,7 @@ The basic use of the code is best understood by looking at the example code in `
 1. Initialise the core functionality through `initialiseManager(const char* deviceName)`.
 2. Add the devices that should be connected to by using `addConnection(Connection newConnection)`.
 3. Establish the connection by calling `connect(uint8_t ID)`.
-4. Use the functions `sendData`,`provideData` and requestData` to exchange data.
+4. Use the functions `sendData`,`provideData` and `requestData` to exchange data.
 5. Handle received data through the callback function `receivedData`.
 6. Act on events for the connection through the event handler `handleEvents`.
 
@@ -41,3 +41,7 @@ Refer to the thesis paper in this repository for in-depth information about the 
 The nRF SDK is provided by Nordic Semiconductor [here](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832/Development-tools-and-Software).
 
 This makefile uses the updated SoftDevice v4.0.3 (not 4.0.2 provided with the SDK), available [here](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832/Development-tools-and-Software).
+
+## License
+
+This code is provided free of charge and without warranty. You may use this code for whatever purpose you choose, in parts or in full, but you may not sell it. I don't take responsibility for any damage occuring through the use of this code. Please use it responsibly.
