@@ -1,15 +1,15 @@
-# Intra-satellite communication based on Bluetooth Low Energy
+# A Bluetooth based intra-satellite communication system
 
 ## Overview
 
-This repository provides the code that has been developed for the master thesis *Intra-satellite communication based on Bluetooth Low Energy* at Aalto university, Finland. The code is used with the nRF52832 chip from Nordic Semiconductor and handles the Bluetooth Low Energy connections between multiple devices to provide an easy-to-use system for the wireless communication between several satellite subsystems.
+This repository provides the code that has been developed for the master thesis *A Bluetooth based intra-satellite communication system* at Aalto university, Finland. The code is used with the nRF52832 chip from Nordic Semiconductor and handles the Bluetooth Low Energy connections between multiple devices to provide an easy-to-use system for the wireless communication between several satellite subsystems.
 
 ## Usage
 
 The files provided here should be self-sufficient, since the complete SDK from Nordic Semiconductor is included in this repository. To use the code, follow these steps:
 
 1. Download the repository
-2. Install gcc-arm-none-eabi for your system.
+2. Install the GCC compiler (gcc-arm-none-eabi) for your system.
 3. Install nrfjprog for your system from [here](http://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF52832) (under downloads)
 4. Download the [Segger J-Link Software and Documentation pack](https://www.segger.com/downloads/jlink) for your system
 3. Adjust `makefile.common` in the directory `SDK_ROOT/components/toolchain/gcc` to point to your gcc installation
